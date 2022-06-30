@@ -1,0 +1,137 @@
+<project name="commonBuild" basedir=".">
+    <!-- set global properties for this build -->
+    <import file="../../../../global.xml"></import>
+    <property name="src" location="src"/>
+    <property name="build" location="bin"/>
+	<!-- 輸出jar檔路徑 -->
+	<property name="outLib" location="../../../../ExportLibrary"/>
+	<!-- TEJ自行開發元件 -->
+    <property name="customLib" location="../../../../CustomLibrary"/>
+	<!-- 第三方元件 -->
+    <property name="commonsLib" location="../../../../Outsidelib"></property>
+	<!-- 報表元件 -->
+    <property name="reportLib" location="../../../../Outsidelib/tej-report-2.0"></property>
+
+
+    <!-- 利用pathconvert來替換組合成字串寫回 -->
+    <pathconvert property="manifest.commons.library" pathsep=" ">
+        <mapper>
+            <chainedmapper>
+                <!-- remove absolute path -->
+                <flattenmapper/>
+                <!-- add lib/ prefix -->
+                <globmapper from="*" to="\\tej-filesrv01\dbsys\Outsidelib\*"/>
+            </chainedmapper>
+        </mapper>
+        <path>
+            <!-- lib.home contains all jar files, in several subdirectories -->
+            <fileset dir="${commonsLib}">
+                <include name="**/*.jar"/>
+				<exclude name="**/tej-report-2.0/*"/>
+				<exclude name="**/tej-report/*"/>
+				<exclude name="**/tej-report.jar"/>
+            </fileset>
+        </path>
+    </pathconvert>
+    <pathconvert property="manifest.custom.library" pathsep=" ">
+        <mapper>
+            <chainedmapper>
+                <!-- remove absolute path -->
+                <flattenmapper/>
+                <globmapper from="*" to="\\tej-filesrv01\dbsys\customLib\*"/>
+            </chainedmapper>
+        </mapper>
+        <path>
+            <!-- lib.home contains all jar files, in several subdirectories -->
+            <fileset dir="${customLib}">
+				<include name="**/tej_tool_NDB.jar" />
+				<include name="**/s2t.jar" />
+				<exclude name="**/tej-report-2.0/*"/>
+				<exclude name="**/tej-report/*"/>
+				<exclude name="**/tej-report.jar"/>
+            </fileset>
+        </path>
+    </pathconvert>
+    <pathconvert property="manifest.custombk.library" pathsep=" ">
+        <mapper>
+            <chainedmapper>
+                <!-- remove absolute path -->
+                <flattenmapper/>
+                <globmapper from="*" to="\\tej-filesrv01\dbsys\customLibbk\*"/>
+            </chainedmapper>
+        </mapper>
+        <path>
+            <!-- lib.home contains all jar files, in several subdirectories -->
+            <fileset dir="${customLib}">
+				<include name="**/tej_tool_NDB.jar" />
+				<include name="**/s2t.jar" />
+				<exclude name="**/tej-report-2.0/*"/>
+				<exclude name="**/tej-report/*"/>
+				<exclude name="**/tej-report.jar"/>
+            </fileset>
+        </path>
+    </pathconvert>
+	<pathconvert property="manifest.report.library" pathsep=" ">
+        <mapper>
+            <chainedmapper>
+                <!-- remove absolute path -->
+                <flattenmapper/>
+                <globmapper from="*" to="\\tej-filesrv01\dbsys\Outsidelib\tej-report-2.0\*"/>
+            </chainedmapper>
+        </mapper>
+        <path>
+            <!-- lib.home contains all jar files, in several subdirectories -->
+            <fileset dir="${reportLib}">
+				<include name="**/tej_core.jar" />
+				<include name="**/tej-report-2.0.jar" />
+            </fileset>
+        </path>
+    </pathconvert>
+	<!--設定需要用的lib-->
+    <path id="project.class.path">
+        <fileset dir="${customLib}">
+            <include name="**/tej_tool_NDB.jar"/>
+			<exclude name="**/tej-report-2.0/*"/>
+			<exclude name="**/tej-report/*"/>
+			<exclude name="**/tej-report.jar"/>			
+        </fileset>
+        <fileset dir="${commonsLib}">
+			<include name="**/*.jar"/>
+			<exclude name="**/tej-report-2.0/*"/>
+			<exclude name="**/tej-report/*"/>
+			<exclude name="**/tej-report.jar"/>				
+        </fileset>
+		<fileset dir="${reportLib}">
+			<include name="**/tej_core.jar" />
+			<include name="**/tej-report-2.0.jar" />
+        </fileset>		
+    </path>
+    <tstamp>
+        <format property="now.version" pattern="yyyy/MM/dd HH:mm:ss"/>
+    </tstamp>
+    <target name="init" depends="clean">
+        <!-- Create the time stamp -->
+        <tstamp/>
+        <!-- Create the build directory structure used by compile -->
+        <mkdir dir="${build}"/>
+    </target>
+	
+    <target name="compile" depends="init"
+            description="compile the source ">
+		<delete dir="${build}" description="先清除之前build出來的所有檔案"></delete>
+        <mkdir dir="${build}" description="重新建立一個新的"></mkdir>
+        <!-- Compile the java code from ${src} into ${build} -->
+        <javac srcdir="${src}" destdir="${build}" memoryMaximumSize="${jvm_heapSize}"
+               includeantruntime="false" debug="true" debuglevel="lines,vars,source"
+               executable="${jdk_home}/bin/javac" fork="yes"
+               classpathref="project.class.path" encoding="UTF-8">
+        </javac>
+    </target>
+	
+	
+    <target name="clean" 
+            description="clean up">
+        <!-- Delete the ${build} and ${dist} directory trees -->
+        <delete dir="${build}"/>
+    </target>
+</project>

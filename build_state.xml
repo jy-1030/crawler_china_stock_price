@@ -1,0 +1,30 @@
+﻿<project name="build_ImportEmgQfiiServiceMain" default="core" basedir=".">
+    <import file="build.xml"/>
+    <property name="jarName" value="TEJ_215_XPRC_54"></property>
+    <property name="subFolder" value="/chn/PRC/TEJ_215_XPRC_54/"></property>
+    <property name="rfpPath" value="XPRC"></property>
+
+
+    <target name="core" depends="compile"
+            description="generate the distribution">
+        <!-- Create the distribution directory -->
+        <mkdir dir="${outLib}"/>
+        <!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
+
+        <jar jarfile="${outLib}/${jarName}.jar">
+            <fileset dir="${build}">
+                <patternset>
+                    <include name="**/*.class"></include>
+                </patternset>
+            </fileset>
+
+            <manifest>
+                <attribute name="Built-By" value="${buildUser}"></attribute>
+                <attribute name="Main-Class" value="${rfpPath}.StateMain"/>
+                <attribute name="Implementation-Version" value="${now.version}" />
+                <attribute name="Class-Path" value="${manifest.commons.library} ${manifest.custom.library}" />
+				<!--<attribute name="Class-Path" value="${manifest.commons.library} ${manifest.custom.library} ${manifest.report.library}" />-->
+            </manifest>
+        </jar>
+    </target>
+</project>

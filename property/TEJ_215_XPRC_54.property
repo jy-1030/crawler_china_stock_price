@@ -1,0 +1,32 @@
+url = http://www.sse.com.cn/market/dealingdata/overview/margin/a/rzrqjygk[date].xls
+url2=http://www.sse.com.cn/market/othersdata/margin/detail/index.shtml?marginDate=20220517
+post=false
+connecttimeout=20000
+readtimeout=20000
+retry=3
+encoding=UTF-8
+outdir=
+extname=txt
+separation=#
+proxyip=
+proxyport=
+rawmaxbyte=0
+target_encoding=utf-8
+tranferEncoding=true
+extractTextAboveTable=true
+showsql=
+dbname=chn
+schedule=chn_prc_sse_C
+tablename=prc.margin_txssmar
+chain=XPRC.TEJ_215_XPRC_54,XPRC.TEJ_215_XPRC_54_1
+chain1=XPRC.TEJ_215_XPRC_54_2
+lastmail=N
+title=本日融资余额(元)#tej#本日融资买入额(元)#tej#本日融券余量#tej#本日融券余量金额(元)#tej#本日融券卖出量#tej#本日融资融券余额(元)
+title1=标的证券代码#tej#标的证券简称#tej#本日融资余额(元)#tej#本日融资买入额(元)#tej#本日融资偿还额(元)#tej#本日融券余量#tej#本日融券卖出量#tej#本日融券偿还量
+title2=信用交易日期#融资余额(元)#融资买入额(元)#融券余量#融券余量 金额(元)#融券卖出量#融资融券余额(元)
+stk_id=SS9999
+setProperty0=A:\selenium\Webdriver\100\chromedriver.exe
+
+
+url_s = http://query.sse.com.cn/marketdata/tradedata/queryMargin.do?jsonCallBack=jsonpCallback64981&isPagination=true&tabType=&beginDate=[date]&endDate=[date]&pageHelp.pageSize=100&_=1652948622563
+url_l = http://query.sse.com.cn/marketdata/tradedata/queryMargin.do?jsonCallBack=jsonpCallback75445&isPagination=true&tabType=mxtype&detailsDate=&stockCode=&beginDate=[date]&endDate=[date]&pageHelp.pageSize=10000&pageHelp.pageCount=50&pageHelp.pageNp=1&pageHelp.beginPage.cacheSize=1&pageHelp.endPage=54&_=1652952649867
